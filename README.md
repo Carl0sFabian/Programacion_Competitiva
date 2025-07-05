@@ -6,7 +6,7 @@
 
 **Alumnos:**  
 - Mendoza Quispe Carlos Fabian (U20231C416)  
-- Moncada Olivares Elias David  
+- Moncada Olivares Elias David (U202315959)
 - Medina Oropeza Enzo Daniel  
 
 **Julio 2025**

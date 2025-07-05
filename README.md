@@ -490,11 +490,11 @@ Por ejemplo, si se ejecutan las siguientes instrucciones:
 
 ```cpp
 trie.insert("apple");
-cout << trie.search("apple") << endl;    // true: "apple" está almacenado
-cout << trie.search("app") << endl;      // false: "app" aún no está almacenado
-cout << trie.startsWith("app") << endl;  // true: existe al menos una palabra que empieza con "app"
+cout << trie.search("apple") << endl;    
+cout << trie.search("app") << endl;     
+cout << trie.startsWith("app") << endl;  
 trie.insert("app");
-cout << trie.search("app") << endl;      // true: ahora "app" fue insertado
+cout << trie.search("app") << endl;   
 ```
 
 La salida será:

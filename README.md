@@ -37,14 +37,16 @@ Como conclusión preliminar, se destaca el fortalecimiento de habilidades clave 
 | Enzo Daniel Medina Oropeza      |                |                   |
 
 ## 4. Desarrollo
+
 ### Ejercicio 1
-![Ejercicio 1](Exercises/Ejercicio 1.png)
+![Ejercicio 1](Exercises/Ejercicio_1.png)
 
 ### Ejercicio 2
-![Ejercicio 2](Exercises/Ejercicio 2.png)
+![Ejercicio 2](Exercises/Ejercicio_2.png)
 
 ### Ejercicio 3
-![Ejercicio 3](Exercises/Ejercicio 3.png)
+![Ejercicio 3](Exercises/Ejercicio_3.png)
 
 ### Ejercicio 4
-![Ejercicio 4](Exercises/Ejercicio 4.png)
+![Ejercicio 4](Exercises/Ejercicio_4.png)
+

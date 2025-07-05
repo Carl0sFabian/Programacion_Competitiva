@@ -41,13 +41,15 @@ Como conclusión preliminar, se destaca el fortalecimiento de habilidades clave 
 ### Ejercicio 1
 ![Ejercicio 1](Exercises/Ejercicio_1.png)
 
+## 🐍 Snakes and Ladders (Programación Dinámica)
+
 El problema pertenece a la categoría de algoritmos de búsqueda y se resuelve eficientemente mediante el algoritmo de Búsqueda en Anchura (BFS). Esta técnica permite encontrar el número mínimo de pasos necesarios para ir de un punto de inicio a un punto final en un grafo no ponderado, siendo ideal cuando se busca la menor cantidad de movimientos entre nodos.
 
 Este desafío se encuentra en la plataforma de programación competitiva HackerRank, la cual permite resolver problemas prácticos de estructuras de datos, algoritmos, matemáticas, inteligencia artificial, entre otros. En este caso, el problema forma parte de la sección de grafos.
 
 El enlace directo al enunciado del problema en HackerRank es el siguiente:
 
-https://www.hackerrank.com/challenges/the-quickest-way-up/problem
+🔗 https://www.hackerrank.com/challenges/the-quickest-way-up/problem
 
 El problema plantea una simulación del clásico juego de mesa “Serpientes y Escaleras”. El jugador comienza en la casilla 1 y debe llegar a la casilla 100 lanzando un dado, cuyo resultado puede ser cualquier número del 1 al 6. Si cae en una casilla donde hay una escalera, sube automáticamente hasta el extremo superior de esta; si cae en una serpiente, desciende hasta el extremo inferior. El objetivo es encontrar la mínima cantidad de lanzamientos de dado necesarios para alcanzar la casilla 100, considerando todas las escaleras y serpientes presentes en el tablero. Pueden existir múltiples escenarios (casos de prueba), cada uno con diferentes configuraciones de escaleras y serpientes.
 
@@ -178,14 +180,335 @@ En cuanto a la verificación del algoritmo, se garantiza encontrar el camino má
 
 Esta solución es robusta y eficiente, y asegura que, si existe un camino para llegar a la casilla final, se encontrará con el menor número posible de movimientos.
 
-![Results 1](Results/Results_2.png)
+![Results 1](Results/Results_1.png)
 
 ### Ejercicio 2
 ![Ejercicio 2](Exercises/Ejercicio_2.png)
 
+## 🥚 Super Egg Drop (Programación Dinámica)
+
+El problema “Super Egg Drop” pertenece a la categoría de algoritmos de programación dinámica avanzada. Se trata de un clásico ejemplo de optimización con subproblemas solapados, en el que se requiere determinar el número mínimo de movimientos necesarios para resolver un escenario incierto en el peor de los casos. El algoritmo que se aplica aquí es una forma eficiente de programación dinámica (DP) con un enfoque de diseño basado en la estrategia minimax, la cual busca minimizar el número máximo de intentos requeridos en el peor escenario.
+
+Este desafío está disponible en la plataforma LeetCode, una reconocida herramienta web para la práctica de algoritmos y estructuras de datos, ampliamente utilizada en entrevistas técnicas por empresas tecnológicas.
+
+
+El enlace directo al enunciado del problema en LeetCode es el siguiente:
+
+🔗 [https://leetcode.com/problems/super-egg-drop/](https://leetcode.com/problems/super-egg-drop/)
+
+El enunciado plantea el siguiente reto: se cuenta con k huevos idénticos y un edificio de n pisos, numerados del 1 al n. Existe un piso crítico f tal que, si se lanza un huevo desde cualquier piso superior a f, este se romperá, mientras que si se lanza desde f o cualquier piso inferior, no se romperá. El objetivo es encontrar con certeza el valor de f utilizando la menor cantidad de lanzamientos posibles, considerando que si un huevo se rompe ya no puede volver a usarse, pero si sobrevive, puede ser reutilizado.
+
+A continuación, se presenta el código completo del algoritmo desarrollado en C++:
+
+## 📊 C++ Super Egg Drop 
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> memo;
+
+    int dp(int k, int n) {
+        if (n == 0 || n == 1) return n;
+        if (k == 1) return n;
+        if (memo[k][n] != -1) return memo[k][n];
+
+        int low = 1, high = n;
+        int res = n;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int broken = dp(k - 1, mid - 1);
+            int notBroken = dp(k, n - mid);
+            int worst = max(broken, notBroken) + 1;
+
+            res = min(res, worst);
+
+            if (broken > notBroken) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return memo[k][n] = res;
+    }
+
+    int superEggDrop(int k, int n) {
+        memo = vector<vector<int>>(k + 1, vector<int>(n + 1, -1));
+        return dp(k, n);
+    }
+};
+```
+
+### 📥 Ingreso y Salida de Datos
+
+Respecto al ingreso y salida de datos, el programa recibe como parámetros los valores de **k** (cantidad de huevos) y **n** (cantidad de pisos). La función `superEggDrop(k, n)` devolverá como resultado el número mínimo de lanzamientos necesarios en el peor de los casos para determinar con certeza el piso crítico.
+
+A modo de ejemplo, si se ingresan los siguientes datos:
+
+```cpp
+k = 2
+n = 6
+```
+
+La salida del programa será:
+
+```
+3
+```
+
+Esto significa que se requieren **al menos 3 lanzamientos** en el peor escenario para determinar con certeza el piso crítico donde los huevos empiezan a romperse.
+
+### 📈 Funcionamiento del Algoritmo
+
+En cuanto a la verificación del algoritmo, se garantiza encontrar el número mínimo de intentos para determinar el piso crítico. La solución implementa una **Programación Dinámica con memoización** para evitar cálculos redundantes de subproblemas y una búsqueda binaria dentro del rango de pisos posibles para optimizar la cantidad de simulaciones.
+
+Cada llamada recursiva simula dos posibles escenarios:
+
+- **Que el huevo se rompa** (y se reduce la cantidad de huevos disponibles y el rango de pisos).
+- **Que el huevo no se rompa** (se mantiene la cantidad de huevos, pero se reduce el rango de pisos restantes).
+
+Luego, se toma el peor de los dos casos posibles (ya que el escenario a resolver debe funcionar incluso en el peor de los casos) y se le suma un intento por el lanzamiento actual. Se busca minimizar este valor máximo para obtener la solución más eficiente.
+
+![Results 2](Results/Results_2.png)
+
 ### Ejercicio 3
 ![Ejercicio 3](Exercises/Ejercicio_3.png)
+
+## 📖 Contacts (Trie) 
+
+El problema **“Tries: Contacts”** es un ejercicio de dificultad **Hard** de la plataforma **HackerRank**, el cual plantea la implementación de una agenda de contactos capaz de realizar dos operaciones: **agregar un nombre** y **encontrar cuántos nombres comienzan con un prefijo dado**. Dado que el número de operaciones puede alcanzar hasta **100.000**, se requiere una solución con alta eficiencia en tiempo.
+
+Este problema se resuelve utilizando un algoritmo basado en la estructura de datos **Trie**, también conocida como **árbol de prefijos**. Un Trie permite almacenar múltiples cadenas de texto aprovechando sus prefijos compartidos, lo que reduce la redundancia y mejora el tiempo de búsqueda. Las operaciones básicas en un Trie (inserción y búsqueda por prefijo) se realizan en tiempo lineal respecto a la longitud de la palabra o prefijo, es decir, en **O(L)**, donde **L** es la cantidad de letras.
+
+El problema se encuentra publicado en la plataforma **HackerRank** en el siguiente enlace:
+
+🔗 [https://www.hackerrank.com/challenges/ctci-contacts/problem](https://www.hackerrank.com/challenges/ctci-contacts/problem)
+
+El enunciado solicita procesar operaciones. Cada operación puede ser de tipo `add name`, que agrega un nuevo nombre a la estructura, o `find partial`, que devuelve cuántos nombres actualmente almacenados comienzan con el prefijo `partial`. Las palabras están compuestas por letras minúsculas sin espacios, y los nombres no se repiten. El objetivo es responder a todas las operaciones `find` de manera eficiente y precisa.
+
+A continuación, se muestra el código completo desarrollado en **C++**:
+
+## 📊 C++ Contacts (Trie) 
+
+```cpp
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+struct TrieNode {
+    TrieNode* children[26];
+    int prefixCount;
+
+    TrieNode() {
+        for (int i = 0; i < 26; ++i)
+            children[i] = nullptr;
+        prefixCount = 0;
+    }
+};
+
+class ContactsTrie {
+private:
+    TrieNode* root;
+
+public:
+    ContactsTrie() {
+        root = new TrieNode();
+    }
+
+    void add(const string& name) {
+        TrieNode* node = root;
+        for (char c : name) {
+            int idx = c - 'a';
+            if (!node->children[idx])
+                node->children[idx] = new TrieNode();
+            node = node->children[idx];
+            node->prefixCount++;
+        }
+    }
+
+    int find(const string& partial) {
+        TrieNode* node = root;
+        for (char c : partial) {
+            int idx = c - 'a';
+            if (!node->children[idx])
+                return 0;
+            node = node->children[idx];
+        }
+        return node->prefixCount;
+    }
+};
+
+int main() {
+    int n;
+    cin >> n;
+
+    ContactsTrie trie;
+    vector<int> resultados;
+    string command, value;
+
+    for (int i = 0; i < n; ++i) {
+        cin >> command >> value;
+        if (command == "add") {
+            trie.add(value);
+        } else if (command == "find") {
+            resultados.push_back(trie.find(value));
+        }
+    }
+
+    for (int res : resultados) {
+        cout << res << endl;
+    }
+
+    return 0;
+}
+```
+
+### 📥 Ingreso y Salida de Datos
+
+Por ejemplo, si se ingresan las siguientes operaciones:
+
+```
+4
+add hack
+add hackerrank
+find hac
+find hak
+```
+
+La salida será:
+
+```
+2
+0
+```
+
+Esto indica que existen **2 nombres** en la agenda que comienzan con `hac` y **ninguno** que comience con `hak`.
+
+### 📈 Funcionamiento del Algoritmo
+
+El algoritmo aprovecha la estructura de datos **Trie** para almacenar los nombres de forma eficiente, compartiendo los prefijos comunes entre ellos. Cada vez que se añade una letra, se incrementa un contador en el nodo correspondiente, lo que permite, al buscar un prefijo, conocer en tiempo constante cuántos nombres comienzan con ese prefijo siguiendo los nodos del árbol.
+
+Esto permite procesar una gran cantidad de operaciones de forma eficiente, incluso cuando el número de nombres y consultas es alto.
+
+![Results 3](Results/Results_3.png)
 
 ### Ejercicio 4
 ![Ejercicio 4](Exercises/Ejercicio_4.png)
 
+## 📖 Implement Trie (Prefix Tree)
+
+El problema “Implement Trie (Prefix Tree)” es un ejercicio de dificultad Medium de la plataforma LeetCode, el cual plantea la implementación de una estructura de datos eficiente capaz de almacenar palabras y realizar búsquedas completas o por prefijo. Esta estructura es útil en aplicaciones como autocompletado, correctores ortográficos y motores de búsqueda.
+
+Este problema se resuelve utilizando un algoritmo basado en la estructura de datos Trie, también conocida como árbol de prefijos. Un Trie permite almacenar múltiples cadenas de texto aprovechando sus prefijos compartidos, lo que reduce la redundancia y mejora el tiempo de búsqueda. Las operaciones básicas en un Trie (inserción, búsqueda exacta y búsqueda por prefijo) se realizan en tiempo lineal respecto a la longitud de la palabra, es decir, en O(L), donde L es el número de letras.
+
+El problema se encuentra publicado en la plataforma LeetCode en el siguiente enlace:
+
+🔗 [https://leetcode.com/problems/implement-trie-prefix-tree/](https://leetcode.com/problems/implement-trie-prefix-tree/)
+
+El enunciado solicita implementar una clase llamada Trie con tres operaciones fundamentales:
+
+- `insert word`: agrega una nueva palabra a la estructura.
+- `search word`: verifica si una palabra exacta está almacenada en el trie.
+- `startsWith prefix`: determina si alguna palabra almacenada comienza con el prefijo especificado.
+
+## 📊 C++ Trie Prefix Tree 
+
+A continuación, se muestra el código en C++:
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class TrieNode {
+public:
+    TrieNode* children[26]; 
+    bool isEndOfWord;
+
+    TrieNode() {
+        isEndOfWord = false;
+        for(int i = 0; i < 26; i++)
+            children[i] = nullptr;
+    }
+};
+
+class Trie {
+private:
+    TrieNode* root;
+
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(string word) {
+        TrieNode* node = root;
+        for(char c : word) {
+            int index = c - 'a';
+            if(!node->children[index])
+                node->children[index] = new TrieNode();
+            node = node->children[index];
+        }
+        node->isEndOfWord = true;
+    }
+
+    bool search(string word) {
+        TrieNode* node = root;
+        for(char c : word) {
+            int index = c - 'a';
+            if(!node->children[index])
+                return false;
+            node = node->children[index];
+        }
+        return node->isEndOfWord;
+    }
+
+    bool startsWith(string prefix) {
+        TrieNode* node = root;
+        for(char c : prefix) {
+            int index = c - 'a';
+            if(!node->children[index])
+                return false;
+            node = node->children[index];
+        }
+        return true;
+    }
+};
+```
+
+### 📥 Ingreso y Salida de Datos
+
+Respecto al ingreso y salida de datos, el programa permite insertar palabras al Trie, buscar si una palabra exacta existe en la estructura, y verificar si alguna palabra almacenada comienza con un prefijo determinado. Las operaciones se realizan de forma secuencial llamando a los métodos correspondientes de la clase `Trie`.
+
+Por ejemplo, si se ejecutan las siguientes instrucciones:
+
+```cpp
+trie.insert("apple");
+cout << trie.search("apple") << endl;    // true: "apple" está almacenado
+cout << trie.search("app") << endl;      // false: "app" aún no está almacenado
+cout << trie.startsWith("app") << endl;  // true: existe al menos una palabra que empieza con "app"
+trie.insert("app");
+cout << trie.search("app") << endl;      // true: ahora "app" fue insertado
+```
+
+La salida será:
+
+```
+[null, null, true, false, true, null, true]
+```
+
+Esto significa que:
+
+- Se insertó correctamente la palabra `"apple"`.
+- La búsqueda exacta de `"apple"` devolvió `true`.
+- La búsqueda exacta de `"app"` devolvió `false` inicialmente.
+- La verificación de prefijo `"app"` devolvió `true`, porque `"apple"` comienza con `"app"`.
+- Tras insertar `"app"` y buscarla nuevamente, devolvió `true`.
+
+![Results 4](Results/Results_4.png)

@@ -55,6 +55,77 @@ La solución implementada en lenguaje C + + utiliza un vector para simular el ta
 
 A continuación, se presenta el código completo del algoritmo desarrollado en C++:
 
+## 📊 C++ Snakes and Ladders Solver
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int quickestWayUp(const vector<pair<int, int>>& ladders, const vector<pair<int, int>>& snakes) {
+    vector<int> board(101);
+    for (int i = 1; i <= 100; ++i)
+        board[i] = i;
+
+    for (const auto& ladder : ladders)
+        board[ladder.first] = ladder.second;
+
+    for (const auto& snake : snakes)
+        board[snake.first] = snake.second;
+
+    vector<bool> visited(101, false);
+    queue<pair<int, int>> q;
+    q.push({1, 0});
+    visited[1] = true;
+
+    while (!q.empty()) {
+        int pos = q.front().first;
+        int moves = q.front().second;
+        q.pop();
+
+        if (pos == 100)
+            return moves;
+
+        for (int dice = 1; dice <= 6; ++dice) {
+            int next = pos + dice;
+            if (next <= 100 && !visited[board[next]]) {
+                visited[board[next]] = true;
+                q.push({board[next], moves + 1});
+            }
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    vector<int> resultados;
+
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<pair<int, int>> ladders(n);
+        for (int i = 0; i < n; ++i)
+            cin >> ladders[i].first >> ladders[i].second;
+
+        int m;
+        cin >> m;
+        vector<pair<int, int>> snakes(m);
+        for (int i = 0; i < m; ++i)
+            cin >> snakes[i].first >> snakes[i].second;
+
+        resultados.push_back(quickestWayUp(ladders, snakes));
+    }
+
+    for (int res : resultados)
+        cout << res << endl;
+
+    return 0;
+}
+```
 
 ### Ejercicio 2
 ![Ejercicio 2](Exercises/Ejercicio_2.png)

@@ -49,7 +49,7 @@ Este desafío se encuentra en la plataforma de programación competitiva HackerR
 
 El enlace directo al enunciado del problema en HackerRank es el siguiente:
 
-🔗 https://www.hackerrank.com/challenges/the-quickest-way-up/problem
+🔗 [https://www.hackerrank.com/challenges/the-quickest-way-up/problem](https://www.hackerrank.com/challenges/the-quickest-way-up/problem)
 
 El problema plantea una simulación del clásico juego de mesa “Serpientes y Escaleras”. El jugador comienza en la casilla 1 y debe llegar a la casilla 100 lanzando un dado, cuyo resultado puede ser cualquier número del 1 al 6. Si cae en una casilla donde hay una escalera, sube automáticamente hasta el extremo superior de esta; si cae en una serpiente, desciende hasta el extremo inferior. El objetivo es encontrar la mínima cantidad de lanzamientos de dado necesarios para alcanzar la casilla 100, considerando todas las escaleras y serpientes presentes en el tablero. Pueden existir múltiples escenarios (casos de prueba), cada uno con diferentes configuraciones de escaleras y serpientes.
 

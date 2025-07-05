@@ -36,4 +36,4 @@ Como conclusión preliminar, se destaca el fortalecimiento de habilidades clave 
 | Elias David Moncada Olivares    |                      |                     |
 | Enzo Daniel Medina Oropeza      |                |                   |
 
-## 4.Desarrollo
+## 4. Desarrollo

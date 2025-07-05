@@ -126,6 +126,59 @@ int main() {
     return 0;
 }
 ```
+### 📥 Ingreso y Salida de Datos
+
+Respecto al ingreso y salida de datos, el programa comienza solicitando un número entero que representa la cantidad de casos de prueba. Para cada caso, se ingresan las escaleras disponibles, luego las serpientes, y finalmente se imprime el mínimo número de movimientos requerido para completar el juego.
+
+A modo de ejemplo, si se ingresan los siguientes datos:
+
+```
+2
+3
+32 62
+42 68
+12 98
+7
+95 13
+97 25
+93 37
+79 27
+75 19
+49 47
+67 17
+4
+8 52
+6 80
+26 42
+2 72
+9
+51 19
+39 11
+37 29
+81 3
+59 5
+79 23
+53 7
+43 33
+77 21
+```
+
+La salida del programa será:
+
+```
+3
+5
+```
+
+Esto significa que en el primer escenario se necesitan **3 lanzamientos de dado** para alcanzar la casilla 100, y en el segundo, **5 lanzamientos**.
+
+### 📈 Funcionamiento del Algoritmo
+
+En cuanto a la verificación del algoritmo, se garantiza encontrar el camino más corto desde la casilla 1 hasta la 100. Cada nivel de la búsqueda representa una cantidad adicional de lanzamientos. Si una casilla contiene una escalera o serpiente, se redirecciona automáticamente al destino de esta, modelando correctamente el comportamiento del tablero.
+
+Esta solución es robusta y eficiente, y asegura que, si existe un camino para llegar a la casilla final, se encontrará con el menor número posible de movimientos.
+
+![Results 1](Results/Results_2.png)
 
 ### Ejercicio 2
 ![Ejercicio 2](Exercises/Ejercicio_2.png)

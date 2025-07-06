@@ -7,7 +7,7 @@
 **Alumnos:**  
 - Mendoza Quispe Carlos Fabian (U20231C416)  
 - Moncada Olivares Elias David (U202315959)
-- Medina Oropeza Enzo Daniel  
+- Medina Oropeza Enzo Daniel  (U202220177)
 
 **Julio 2025**
 
@@ -513,5 +513,99 @@ Esto significa que:
 
 ![Results 4](Results/Results_4.png)
 
-### Ejercicio 5
+### Ejercicio 5  
+![Ejercicio 5](Exercises/Ejercicio_5.png)
 
+## 🔄 Swapping Numbers (Fenwick Tree)
+
+El problema **“Swapping Numbers”** es un ejercicio de dificultad **media**, el cual plantea la optimización del número mínimo de intercambios adyacentes (inversiones) necesarios para ordenar una permutación, permitiendo realizar como máximo un solo intercambio entre cualquier par de posiciones (no necesariamente adyacentes).
+
+Este problema se resuelve utilizando un algoritmo basado en el conteo eficiente de inversiones, lo cual puede lograrse mediante una estructura de datos llamada **Fenwick Tree** (también conocido como **Binary Indexed Tree**). Este árbol permite contar, en tiempo logarítmico, cuántos elementos menores han aparecido antes o después de una posición, lo cual es clave para calcular el número de inversiones.
+
+El problema se encuentra publicado en la plataforma **HackerEarth** en el siguiente enlace:  
+🔗 [Swapping Numbers – HackerEarth](https://www.hackerearth.com/practice/data-structures/advanced-data-structures/fenwick-binary-indexed-trees/practice-problems/algorithm/move-minimization-8a9d3991/)
+
+Dada una permutación de tamaño **n**, se debe calcular la cantidad mínima de **swaps adyacentes** necesarios para ordenarla en orden creciente, permitiendo realizar como máximo **un solo swap libre** entre cualquier par de posiciones del arreglo.
+
+Un swap adyacente es una inversión: un par de índices _(i, j)_ donde _i < j_ y _A[i] > A[j]_.
+
+## 📊 C++ Swapping Numbers (Fenwick Tree)
+
+```cpp
+#include <cstdlib>
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+const int MAX = 7005;
+vector<int> fw(MAX);
+
+int getSum(int i) {
+    int res = 0;
+    while (i > 0) {
+        res += fw[i];
+        i -= i & -i;
+    }
+    return res;
+}
+
+void updateFW(int i, int val) {
+    while (i < MAX) {
+        fw[i] += val;
+        i += i & -i;
+    }
+}
+
+int countInversions(const vector<int>& a) {
+    int n = a.size();
+    fill(fw.begin(), fw.end(), 0); 
+    int inv = 0;
+    for (int i = n - 1; i >= 0; --i) {
+        inv += getSum(a[i] - 1);
+        updateFW(a[i], 1);
+    }
+    return inv;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> a(n);
+    for (int i = 0; i < n; ++i)
+        cin >> a[i];
+
+    int minBeauty = countInversions(a); 
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            swap(a[i], a[j]);
+            int inv = countInversions(a);
+            minBeauty = min(minBeauty, inv);
+            swap(a[i], a[j]); 
+        }
+    }
+
+    cout << minBeauty << '\n';
+    return 0;
+}
+```
+### 📥 Ingreso y Salida de Datos
+
+Respecto al ingreso y salida de datos, el programa lee primero un entero n, que indica el tamaño de la permutación, y a continuación n enteros que representan la secuencia. Tras procesar la permutación contando inversiones y evaluando un único swap libre, imprime un único entero: la mínima cantidad de swaps adyacentes necesarios.
+
+Por ejemplo, si la entrada es:
+
+```cpp
+5
+1 4 2 3 5
+```
+
+La salida será:
+
+```
+1
+```
+![Results 5](Results/Results_5.png)

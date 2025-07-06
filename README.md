@@ -49,7 +49,7 @@ Este desafío se encuentra en la plataforma de programación competitiva HackerR
 
 El enlace directo al enunciado del problema en HackerRank es el siguiente:
 
-🔗 [https://www.hackerrank.com/challenges/the-quickest-way-up/problem](https://www.hackerrank.com/challenges/the-quickest-way-up/problem)
+🔗 [Snakes and Ladders](https://www.hackerrank.com/challenges/the-quickest-way-up/problem)
 
 
 El problema plantea una simulación del clásico juego de mesa “Serpientes y Escaleras”. El jugador comienza en la casilla 1 y debe llegar a la casilla 100 lanzando un dado, cuyo resultado puede ser cualquier número del 1 al 6. Si cae en una casilla donde hay una escalera, sube automáticamente hasta el extremo superior de esta; si cae en una serpiente, desciende hasta el extremo inferior. El objetivo es encontrar la mínima cantidad de lanzamientos de dado necesarios para alcanzar la casilla 100, considerando todas las escaleras y serpientes presentes en el tablero. Pueden existir múltiples escenarios (casos de prueba), cada uno con diferentes configuraciones de escaleras y serpientes.
@@ -195,7 +195,7 @@ Este desafío está disponible en la plataforma LeetCode, una reconocida herrami
 
 El enlace directo al enunciado del problema en LeetCode es el siguiente:
 
-🔗 [https://leetcode.com/problems/super-egg-drop/](https://leetcode.com/problems/super-egg-drop/)
+🔗 [Super Egg Drop](https://leetcode.com/problems/super-egg-drop/)
 
 El enunciado plantea el siguiente reto: se cuenta con k huevos idénticos y un edificio de n pisos, numerados del 1 al n. Existe un piso crítico f tal que, si se lanza un huevo desde cualquier piso superior a f, este se romperá, mientras que si se lanza desde f o cualquier piso inferior, no se romperá. El objetivo es encontrar con certeza el valor de f utilizando la menor cantidad de lanzamientos posibles, considerando que si un huevo se rompe ya no puede volver a usarse, pero si sobrevive, puede ser reutilizado.
 
@@ -288,7 +288,7 @@ Este problema se resuelve utilizando un algoritmo basado en la estructura de dat
 
 El problema se encuentra publicado en la plataforma **HackerRank** en el siguiente enlace:
 
-🔗 [https://www.hackerrank.com/challenges/ctci-contacts/problem](https://www.hackerrank.com/challenges/ctci-contacts/problem)
+🔗 [ Contacts](https://www.hackerrank.com/challenges/ctci-contacts/problem)
 
 El enunciado solicita procesar operaciones. Cada operación puede ser de tipo `add name`, que agrega un nuevo nombre a la estructura, o `find partial`, que devuelve cuántos nombres actualmente almacenados comienzan con el prefijo `partial`. Las palabras están compuestas por letras minúsculas sin espacios, y los nombres no se repiten. El objetivo es responder a todas las operaciones `find` de manera eficiente y precisa.
 
@@ -410,7 +410,7 @@ Este problema se resuelve utilizando un algoritmo basado en la estructura de dat
 
 El problema se encuentra publicado en la plataforma LeetCode en el siguiente enlace:
 
-🔗 [https://leetcode.com/problems/implement-trie-prefix-tree/](https://leetcode.com/problems/implement-trie-prefix-tree/)
+🔗 [Implement Trie](https://leetcode.com/problems/implement-trie-prefix-tree/)
 
 El enunciado solicita implementar una clase llamada Trie con tres operaciones fundamentales:
 
@@ -524,11 +524,13 @@ El problema **“Swapping Numbers”** es un ejercicio de dificultad **media**, 
 Este problema se resuelve utilizando un algoritmo basado en el conteo eficiente de inversiones, lo cual puede lograrse mediante una estructura de datos llamada **Fenwick Tree** (también conocido como **Binary Indexed Tree**). Este árbol permite contar, en tiempo logarítmico, cuántos elementos menores han aparecido antes o después de una posición, lo cual es clave para calcular el número de inversiones.
 
 El problema se encuentra publicado en la plataforma **HackerEarth** en el siguiente enlace:  
-🔗 [https://www.hackerearth.com/practice/data-structures/advanced-data-structures/fenwick-binary-indexed-trees/practice-problems/algorithm/move-minimization-8a9d3991/](https://www.hackerearth.com/practice/data-structures/advanced-data-structures/fenwick-binary-indexed-trees/practice-problems/algorithm/move-minimization-8a9d3991/)
+🔗 [Swapping Numbers](https://www.hackerearth.com/practice/data-structures/advanced-data-structures/fenwick-binary-indexed-trees/practice-problems/algorithm/move-minimization-8a9d3991/)
 
 Dada una permutación de tamaño **n**, se debe calcular la cantidad mínima de **swaps adyacentes** necesarios para ordenarla en orden creciente, permitiendo realizar como máximo **un solo swap libre** entre cualquier par de posiciones del arreglo.
 
 Un swap adyacente es una inversión: un par de índices _(i, j)_ donde _i < j_ y _A[i] > A[j]_.
+
+A continuación, se muestra el código en C++:
 
 ## 📊 C++ Swapping Numbers (Fenwick Tree)
 
@@ -593,7 +595,9 @@ int main() {
     return 0;
 }
 ```
+
 ### 📥 Ingreso y Salida de Datos
+
 
 Respecto al ingreso y salida de datos, el programa lee primero un entero n, que indica el tamaño de la permutación, y a continuación n enteros que representan la secuencia. Tras procesar la permutación contando inversiones y evaluando un único swap libre, imprime un único entero: la mínima cantidad de swaps adyacentes necesarios.
 
@@ -610,3 +614,136 @@ La salida será:
 1
 ```
 ![Results 5](Results/Results_5.png)
+
+### Ejercicio 6  
+![Ejercicio 6](Exercises/Ejercicio_6.png)
+
+## 🌳 Beautiful Pair of Nodes (Fenwick Tree 2D + DFS)
+
+Se da un árbol con un nodo raíz y cada vértice del árbol está etiquetado con dos valores enteros, uno designado como A y otro como B. El objetivo es contar todos los pares de nodos tales que el primero de ellos sea ancestro del segundo en el árbol y, al mismo tiempo, sus valores A y sus valores B sean estrictamente menores que los correspondientes del nodo descendiente. La entrada especifica primero el número de vértices, luego las conexiones entre ellos que forman el árbol, y después dos listas de valores, una para las etiquetas A y otra para las etiquetas B. La salida debe ser un único entero: la cantidad total de pares que cumplen ambas condiciones.
+
+Para poder responder a cuántos ancestros cumplen las dos condiciones de comparación, primero se transforma cada lista de valores en un rango compacto de enteros consecutivos (compresión de coordenadas). A continuación se construye un Fenwick Tree bidimensional sobre esos rangos: la primera dimensión corresponde a los valores de A y dentro de cada posición se mantiene otro Fenwick Tree que gestiona los valores de B.
+
+Al recorrer el árbol mediante búsqueda en profundidad, se va añadiendo al Fenwick Tree la información de cada nodo antes de procesar a sus hijos y se retira cuando se regresa en el recorrido. Justo antes de insertar el nodo actual, se realiza una consulta para contar cuántos de sus ancestros ya insertados cumplen que sus valores comprimidos de A y B son menores que los del nodo en cuestión. De este modo, cada vez que se visita un nuevo vértice se obtiene el número de pares válidos en los que participa como segundo elemento, y al final la suma acumulada es la respuesta buscada.
+
+El problema se encuentra publicado en la plataforma **HackerEarth** en el siguiente enlace:  
+
+🔗 [Beautiful Pair of Nodes ](https://www.hackerearth.com/practice/data-structures/advanced-data-structures/fenwick-binary-indexed-trees/practice-problems/algorithm/beautiful-pair-of-nodes-d5dea13c/)
+
+A continuación, se muestra el código en C++:
+
+## 📊 C++  Beautiful Pair of Nodes (Fenwick Tree)
+
+```cpp
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+using ll = long long;
+
+int n, NA;
+vector<vector<int>> adj;
+vector<int> A, B, ca, cb;
+vector<vector<int>> bitY, fenw;
+ll ans = 0;
+
+void update(int a, int b, int v) {
+    for (int i = a; i <= NA; i += i & -i) {
+        int idx = int(lower_bound(bitY[i].begin(), bitY[i].end(), b)
+                    - bitY[i].begin()) + 1;
+        for (int j = idx; j < (int)fenw[i].size(); j += j & -j)
+            fenw[i][j] += v;
+    }
+}
+
+int query(int a, int b) {
+    int s = 0;
+    for (int i = a; i > 0; i -= i & -i) {
+        int idx = int(upper_bound(bitY[i].begin(), bitY[i].end(), b)
+                    - bitY[i].begin());
+        for (int j = idx; j > 0; j -= j & -j)
+            s += fenw[i][j];
+    }
+    return s;
+}
+
+void dfs(int u, int p) {
+    ans += query(ca[u] - 1, cb[u] - 1);
+    update(ca[u], cb[u], +1);
+    for (int v : adj[u]) if (v != p) dfs(v, u);
+    update(ca[u], cb[u], -1);
+}
+
+int main(){
+    scanf("%d", &n);
+    adj.assign(n+1, vector<int>());
+    for (int i = 0; i < n-1; i++) {
+        int u, v;
+        scanf("%d %d", &u, &v);
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    A.resize(n+1); B.resize(n+1);
+    for (int i = 1; i <= n; i++) scanf("%d", &A[i]);
+    for (int i = 1; i <= n; i++) scanf("%d", &B[i]);
+
+    { vector<int> tmp(A.begin()+1, A.end());
+      sort(tmp.begin(), tmp.end());
+      tmp.erase(unique(tmp.begin(), tmp.end()), tmp.end());
+      NA = tmp.size();
+      ca.resize(n+1);
+      for (int i = 1; i <= n; i++)
+        ca[i] = int(lower_bound(tmp.begin(), tmp.end(), A[i]) - tmp.begin()) + 1;
+    }
+    { vector<int> tmp(B.begin()+1, B.end());
+      sort(tmp.begin(), tmp.end());
+      tmp.erase(unique(tmp.begin(), tmp.end()), tmp.end());
+      cb.resize(n+1);
+      for (int i = 1; i <= n; i++)
+        cb[i] = int(lower_bound(tmp.begin(), tmp.end(), B[i]) - tmp.begin()) + 1;
+    }
+
+    bitY.assign(NA+1, vector<int>());
+    for (int u = 1; u <= n; u++) {
+        for (int i = ca[u]; i <= NA; i += i & -i)
+            bitY[i].push_back(cb[u]);
+    }
+    fenw.assign(NA+1, vector<int>());
+    for (int i = 1; i <= NA; i++) {
+        auto &v = bitY[i];
+        sort(v.begin(), v.end());
+        v.erase(unique(v.begin(), v.end()), v.end());
+        fenw[i].assign(v.size()+1, 0);
+    }
+
+    dfs(1, 0);
+    printf("%lld\n", ans);
+    return 0;
+}
+```
+### 📥 Ingreso y Salida de Datos
+
+El programa primero lee el número de vértices. A continuación recibe las conexiones que forman el árbol y luego dos listas de valores, una para las etiquetas A y otra para las etiquetas B. Finalmente muestra un solo número que indica la cantidad total de pares que cumplen ambas condiciones de ancestro y comparación de valores.
+
+Por ejemplo, si la entrada es:
+
+```cpp
+7
+1 2
+1 3
+2 4
+2 5
+3 6
+3 7
+4 9 1 2 2 6 9
+3 4 4 5 9 3 8
+```
+
+La salida será:
+
+```
+3
+```
+![Results 6](Results/Results_6.png)
+

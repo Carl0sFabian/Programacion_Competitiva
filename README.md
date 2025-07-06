@@ -512,3 +512,6 @@ Esto significa que:
 - Tras insertar `"app"` y buscarla nuevamente, devolvió `true`.
 
 ![Results 4](Results/Results_4.png)
+
+### Ejercicio 5
+

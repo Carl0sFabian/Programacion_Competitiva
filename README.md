@@ -747,3 +747,417 @@ La salida será:
 ```
 ![Results 6](Results/Results_6.png)
 
+### Ejercicio 7 (Algoritmo KMP1)
+![KMP_1](Exercises/KMP_1.png)
+
+### Search pattern
+
+El problema “Search Pattern” es un ejercicio de dificultad Hard, que plantea la búsqueda de todas las ocurrencias de un patrón dentro de un texto dado. Ambos están compuestos únicamente por letras minúsculas y pueden tener una longitud considerable, llegando hasta el millón de caracteres. Por lo tanto, se requiere una solución con una eficiencia óptima en tiempo.
+
+Este problema se resuelve utilizando el algoritmo Knuth-Morris-Pratt (KMP), un algoritmo clásico de búsqueda de patrones que mejora significativamente el tiempo de ejecución frente a enfoques ingenuos. Mientras que la búsqueda directa tiene una complejidad de tiempo O(n⋅m), donde “n” es la longitud del texto y “m”, la del patrón, KMP reduce esta complejidad a O(n+m) gracias a un preprocesamiento inteligente del patrón.
+
+El problema se encuentra publicado en la plataforma de Geekforgeeks en el siguiente enlace:
+https://www.geeksforgeeks.org/problems/search-pattern0205/1
+
+A continuación, se muestra el código en C++:
+
+### KMP Algorithm
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> computeLPSArray(string pat) {
+        int m = pat.length();
+        vector<int> lps(m, 0);
+        int len = 0;
+        int i = 1;
+        while (i < m) {
+            if (pat[i] == pat[len]) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else {
+                if (len != 0) {
+                    len = lps[len - 1];
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+
+    vector<int> search(string pat, string txt) {
+        vector<int> lps = computeLPSArray(pat);
+        vector<int> result;
+        int i = 0, j = 0;
+        int n = txt.length(), m = pat.length();
+        while (i < n) {
+            if (pat[j] == txt[i]) {
+                i++;
+                j++;
+            }
+
+            if (j == m) {
+                result.push_back(i - j);
+                j = lps[j - 1];
+            } else if (i < n && pat[j] != txt[i]) {
+                if (j != 0)
+                    j = lps[j - 1];
+                else
+                    i++;
+            }
+        }
+        return result;
+    }
+};
+```
+
+### Resultados:
+
+![Result_KMP1](Results/Result_KMP1.png)
+
+### Ejercicio 8 (Algoritmo KMP2)
+![KMP_2](Exercises/KMP_2.png)
+
+### Longest Happy Prefix
+
+El problema “Longest Happy Prefix” es un ejercicio de dificultad Hard, el cual consiste en encontrar el prefijo más largo de una cadena que también sea sufijo, excluyendo la cadena completa. Es decir, se busca el mayor prefijo no vacío que coincida exactamente con un sufijo de la misma cadena. Este tipo de problema tiene aplicaciones en algoritmos de búsqueda de patrones y análisis de cadenas.
+
+Dado que la longitud de la cadena puede alcanzar hasta 100.000 caracteres, se requiere una solución eficiente con tiempo lineal. Esto descarta enfoques ingenuos basados en comparar manualmente todos los prefijos y sufijos posibles, ya que tendrían un rendimiento inaceptable para cadenas largas.
+
+El problema se encuentra publicado en la plataforma de Leetcode en el siguiente enlace:
+https://leetcode.com/problems/longest-happy-prefix/description/
+
+A continuación, se muestra el código en C++:
+
+### KMP Algorithm
+
+```cpp
+class Solution {
+public:
+    struct SegmentTree {
+        int n;
+        vector<int> tree;
+
+        SegmentTree(const vector<int>& baskets) {
+            n = baskets.size();
+            tree.resize(4 * n);
+            build(1, 0, n - 1, baskets);
+        }
+
+        void build(int node, int l, int r, const vector<int>& baskets) {
+            if (l == r) {
+                tree[node] = baskets[l];
+            } else {
+                int mid = (l + r) / 2;
+                build(2 * node, l, mid, baskets);
+                build(2 * node + 1, mid + 1, r, baskets);
+                tree[node] = max(tree[2 * node], tree[2 * node + 1]);
+            }
+        }
+
+        int query(int node, int l, int r, int fruitQty) {
+            if (tree[node] < fruitQty) return -1;
+            if (l == r) return l;
+
+            int mid = (l + r) / 2;
+            if (tree[2 * node] >= fruitQty)
+                return query(2 * node, l, mid, fruitQty);
+            else
+                return query(2 * node + 1, mid + 1, r, fruitQty);
+        }
+
+        void update(int node, int l, int r, int idx, int value) {
+            if (l == r) {
+                tree[node] = value;
+            } else {
+                int mid = (l + r) / 2;
+                if (idx <= mid)
+                    update(2 * node, l, mid, idx, value);
+                else
+                    update(2 * node + 1, mid + 1, r, idx, value);
+                tree[node] = max(tree[2 * node], tree[2 * node + 1]);
+            }
+        }
+
+        int findAndUse(int fruitQty) {
+            int idx = query(1, 0, n - 1, fruitQty);
+            if (idx != -1)
+                update(1, 0, n - 1, idx, -1);
+            return idx;
+        }
+    };
+
+    int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+        SegmentTree seg(baskets);
+        int unplaced = 0;
+
+        for (int fruit : fruits) {
+            if (seg.findAndUse(fruit) == -1)
+                unplaced++;
+        }
+
+        return unplaced;
+    }
+};
+```
+
+### Resultados:
+
+![Result_KMP2](Results/Result_KMP2.png)
+
+### Ejercicio 9 (Árbol de Segmentos1)
+![Segment_Tree1](Exercises/Segment_Tree1.png)
+
+### Range Minimum Query
+
+El problema “Range Minimum Query” es un ejercicio de dificultad media que se centra en la construcción y uso de la estructura de datos eficiente conocida como Segment Tree. Esta estructura es especialmente útil cuando se requiere responder rápidamente a consultas sobre rangos de un arreglo, como obtener el mínimo valor en un subarreglo. El reto también implica actualizar el árbol de forma eficiente si fuera necesario, aunque en este caso solo se trabaja con consultas.
+
+Este ejercicio presenta un arreglo de tamaño N y múltiples consultas del tipo "¿cuál es el valor mínimo entre los índices a y b?". Dado que puede haber hasta 10,000 consultas por caso de prueba, una solución ingenua con complejidad O(N) por consulta sería ineficiente. Por ello, se requiere una solución en tiempo logarítmico por consulta, que es donde entra en juego el Segment Tree.
+
+El problema se encuentra publicado en la plataforma de Geekforgeeks en el siguiente enlace:
+https://www.geeksforgeeks.org/problems/range-minimum-query/1
+
+A continuación, se muestra el código en C++:
+
+### Segment Tree
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Función para construir el Segment Tree
+void buildST(vector<int>& st, const vector<int>& A, int start, int end, int node) {
+    if (start == end) {
+        st[node] = A[start];
+        return;
+    }
+
+    int mid = (start + end) / 2;
+    buildST(st, A, start, mid, 2 * node + 1);
+    buildST(st, A, mid + 1, end, 2 * node + 2);
+
+    st[node] = (st[2 * node + 1] < st[2 * node + 2]) ? st[2 * node + 1] : st[2 * node + 2];
+}
+
+// Función constructora que devuelve el árbol segmentado
+int* constructST(int A[], int N) {
+    int h = 1;
+    while ((1 << h) < N) h++;
+    int size = 2 * (1 << h) - 1;
+
+    vector<int>* stVec = new vector<int>(size);
+    vector<int>& st = *stVec;
+
+    vector<int> input(A, A + N);
+    buildST(st, input, 0, N - 1, 0);
+    
+    return st.data(); // devuelve el puntero al primer elemento
+}
+
+// Función auxiliar para consultar el mínimo en el Segment Tree
+int queryST(int st[], int si, int ss, int se, int qs, int qe) {
+    // caso completamente fuera de rango
+    if (se < qs || ss > qe)
+        return 1000000001; // mayor que cualquier A[i]
+
+    // caso completamente dentro del rango
+    if (ss >= qs && se <= qe)
+        return st[si];
+
+    // caso parcialmente dentro del rango
+    int mid = (ss + se) / 2;
+    int leftMin = queryST(st, 2 * si + 1, ss, mid, qs, qe);
+    int rightMin = queryST(st, 2 * si + 2, mid + 1, se, qs, qe);
+
+    return (leftMin < rightMin) ? leftMin : rightMin;
+}
+
+// Función para RMQ
+int RMQ(int st[], int N, int a, int b) {
+    return queryST(st, 0, 0, N - 1, a, b);
+}
+```
+
+### Resultados:
+
+![Result_Segment_Tree1](Results/Result_Segment_Tree1.png)
+
+### Gráfico:
+
+![Grafico_ST1](Results/Grafico_ST1.png)
+
+### Ejercicio 10 (Árbol de Segmentos2)
+![Segment_Tree2](Exercises/Segment_Tree2.png)
+
+### Fruits and Baskets III
+
+El problema “Fruits and Baskets III” es un ejercicio de dificultad media que plantea la asignación eficiente de elementos de un conjunto (frutas) a otro (canastas) bajo restricciones específicas. El objetivo es determinar cuántos tipos de frutas no pueden colocarse en ninguna canasta disponible, siguiendo un orden de asignación de izquierda a derecha.
+
+Este problema puede resolverse de forma eficiente utilizando un Segment Tree (árbol de segmento), una estructura de datos que permite realizar consultas y actualizaciones en rangos de forma óptima, típicamente en tiempo O(log n).
+
+El problema se encuentra publicado en la plataforma de Leetcode en el siguiente enlace:
+https://leetcode.com/problems/fruits-into-baskets-iii/description/?envType=problem-list-v2&envId=segment-tree
+
+A continuación, se muestra el código en C++:
+
+### Segment Tree
+
+```cpp
+class Solution {
+public:
+    struct SegmentTree {
+        int n;
+        vector<int> tree;
+
+        SegmentTree(const vector<int>& baskets) {
+            n = baskets.size();
+            tree.resize(4 * n);
+            build(1, 0, n - 1, baskets);
+        }
+
+        void build(int node, int l, int r, const vector<int>& baskets) {
+            if (l == r) {
+                tree[node] = baskets[l];
+            } else {
+                int mid = (l + r) / 2;
+                build(2 * node, l, mid, baskets);
+                build(2 * node + 1, mid + 1, r, baskets);
+                tree[node] = max(tree[2 * node], tree[2 * node + 1]);
+            }
+        }
+
+        int query(int node, int l, int r, int fruitQty) {
+            if (tree[node] < fruitQty) return -1;
+            if (l == r) return l;
+
+            int mid = (l + r) / 2;
+            if (tree[2 * node] >= fruitQty)
+                return query(2 * node, l, mid, fruitQty);
+            else
+                return query(2 * node + 1, mid + 1, r, fruitQty);
+        }
+
+        void update(int node, int l, int r, int idx, int value) {
+            if (l == r) {
+                tree[node] = value;
+            } else {
+                int mid = (l + r) / 2;
+                if (idx <= mid)
+                    update(2 * node, l, mid, idx, value);
+                else
+                    update(2 * node + 1, mid + 1, r, idx, value);
+                tree[node] = max(tree[2 * node], tree[2 * node + 1]);
+            }
+        }
+
+        int findAndUse(int fruitQty) {
+            int idx = query(1, 0, n - 1, fruitQty);
+            if (idx != -1)
+                update(1, 0, n - 1, idx, -1);
+            return idx;
+        }
+    };
+```
+
+### Resultados:
+
+![Result_Segment_Tree2](Results/Result_Segment_Tree2.png)
+
+### Gráfico:
+
+![Grafico_ST2](Results/Grafico_ST2.png)
+
+### Ejercicio 11 (Árbol Ternario)
+![Ternary_Search_Tree](Exercises/Ternary_Search_Tree.png)
+
+### Is this Ternary Search?
+
+El problema “Is this Ternary Search” es un ejercicio de dificultad Medium de la plataforma HackerRank que propone la construcción de un árbol de búsqueda ternario (Ternary Search Tree, TST), una estructura de datos poco común, pero interesante desde el punto de vista algorítmico. En este árbol, cada nodo puede tener hasta tres hijos: izquierdo, medio y derecho, y se asignan de acuerdo a comparaciones entre claves enteras.
+
+El objetivo del problema es construir el árbol siguiendo las reglas específicas de inserción, e imprimir para cada nuevo valor insertado el valor de la clave del nodo padre que lo recibió como hijo.
+
+El problema se encuentra publicado en la plataforma de Rankerrank en el siguiente enlace:
+https://www.hackerrank.com/contests/acm-042117/challenges/is-this-ternary-search/problem
+
+A continuación, se muestra el código en C++:
+
+### Ternary Search Tree
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int key;
+    Node* left;
+    Node* mid;
+    Node* right;
+
+    Node(int val) {
+        key = val;
+        left = nullptr;
+        mid = nullptr;
+        right = nullptr;
+    }
+};
+
+int insert(Node* root, int key) {
+    Node* current = root;
+    while (true) {
+        if (key < current->key) {
+            if (current->left == nullptr) {
+                current->left = new Node(key);
+                return current->key;
+            } else {
+                current = current->left;
+            }
+        } else if (key > current->key) {
+            if (current->right == nullptr) {
+                current->right = new Node(key);
+                return current->key;
+            } else {
+                current = current->right;
+            }
+        } else {
+            if (current->mid == nullptr) {
+                current->mid = new Node(key);
+                return current->key;
+            } else {
+                current = current->mid;
+            }
+        }
+    }
+}
+
+int main() {
+    int N, X;
+    cin >> N >> X;
+
+    Node* root = new Node(X);
+
+    for (int i = 0; i < N; ++i) {
+        int val;
+        cin >> val;
+        cout << insert(root, val) << endl;
+    }
+
+    return 0;
+}
+```
+
+### Resultados:
+
+![Result_TST](Results/Result_TST.png)
+
+### Gráfico:
+
+![Grafico_TST](Results/Grafico_TST.png)
+

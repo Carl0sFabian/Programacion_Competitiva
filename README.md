@@ -32,8 +32,8 @@ Como conclusión preliminar, se destaca el fortalecimiento de habilidades clave 
 
 | Nombre completo                  | Tareas realizadas                                                                                  | Autoevaluación (%) |
 |----------------------------------|------------------------------------------------------------------------------------------------------|----------------------|
-| Carlos Fabian Mendoza Quispe    | Desarrallo de algoritmos (Programación Dinamica, Árbol Fenwick,Trie), validación de pruebas y  organización del repositorio          | 35%                    |
-| Elias David Moncada Olivares    |                      |                     |
+| Carlos Fabian Mendoza Quispe    | Desarrollo de algoritmos (Programación Dinamica, Árbol Fenwick,Trie), validación de pruebas y  organización del repositorio          | 35%                    |
+| Elias David Moncada Olivares    | Desarrollo de algoritmos (Algoritmo-Z y Map), validación de pruebas y organización del repositorio                   | 35%                    |
 | Enzo Daniel Medina Oropeza      |                |                   |
 
 ## 4. Desarrollo

@@ -1164,7 +1164,7 @@ int main() {
 ### Ejercicio 12 (Map 1)
 ![Map1](Exercises/MAP_1.png)
 
-###Phone Directory
+### Phone Directory
 
 El problema "Phone directory" es un ejercicio de dificultad difícil que simula el comportamiento autocompletado de contactos en una agenda telefónica. A partir de una lista de contactos y una cadena de búsqueda, se requiere devolver todos los contactos que coincidan con cada prefijo creciente de la cadena ingresada por el usuario.
 
@@ -1248,3 +1248,285 @@ int main() {
 
 ![Result_MAP1](Results/RESULT_MAP1.png)
 
+### Ejercicio 13 (Map 2)
+![Map2](Exercises/MAP_2.png)
+
+### Median of the Subarrays
+
+El problema "Median of the Subarrays" es un ejercicio de dificultad difícil que plantea contar cuántos subarreglos de un arreglo dado tienen una mediana exacta igual a un número específico M.
+
+Este problema puede resolverse de forma eficiente utilizando un map (estructura std::map o unordered_map) para llevar un conteo de balances acumulados, una técnica inspirada en problemas de conteo de subarreglos con suma cero o balance de paridad.
+
+El problema se encuentra publicado en la plataforma **Geeksforgeeks** en el siguiente enlace:  
+https://www.geeksforgeeks.org/problems/median-of-the-subarrays--170647/1?page=1&category=Map&difficulty=Hard&sortBy=submissions
+
+A continuación, se muestra el código en C++:
+
+### Map
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    long long countSubarray(int N, vector<int> A, int M) {
+        int pos = -1;
+        for (int i = 0; i < N; ++i) {
+            if (A[i] == M) {
+                pos = i;
+                break;
+            }
+        }
+
+        vector<int> B(N);
+        for (int i = 0; i < N; ++i) {
+            if (A[i] > M) B[i] = 1;
+            else if (A[i] < M) B[i] = -1;
+            else B[i] = 0;
+        }
+        unordered_map<int, int> balanceCount;
+        int balance = 0;
+        balanceCount[0] = 1;
+
+        for (int i = pos + 1; i < N; ++i) {
+            balance += B[i];
+            balanceCount[balance]++;
+        }
+
+        long long ans = 0;
+        balance = 0;
+        for (int i = pos; i >= 0; --i) {
+            balance += B[i];
+            ans += balanceCount[-balance] + balanceCount[-balance + 1];
+        }
+
+        return ans;
+    }
+};
+
+int main() {
+    int N, M;
+    cout << "Ingrese N (tamaño del arreglo): ";
+    cin >> N;
+
+    vector<int> A(N);
+    cout << "Ingrese el arreglo A[] de tamaño " << N << ":\n";
+    for (int i = 0; i < N; ++i) {
+        cin >> A[i];
+    }
+
+    cout << "Ingrese M (valor de la mediana): ";
+    cin >> M;
+
+    Solution obj;
+    long long result = obj.countSubarray(N, A, M);
+
+    cout << "\nCantidad de subarreglos con mediana " << M << ": " << result << endl;
+
+    return 0;
+}
+```
+
+### Resultados:
+
+![Result_MAP2](Results/RESULT_MAP2.png)
+
+### Ejercicio 14 (Algoritmo-Z 1)
+![AlgoZ_1](Exercises/ALGOZ_1.png)
+
+### Search Pattern
+
+El problema "Search Pattern" es un ejercicio clásico de búsqueda de patrones de dificultad media donde se debe encontrar todas las apariciones de una subcadena pat dentro de una cadena de texto S. El objetivo es identificar y devolver las posiciones iniciales (1-based) donde el patrón pat aparece como subcadena dentro de S.
+
+Para resolverlo eficientemente, se utiliza el Z-Algorithm, una técnica de coincidencia de patrones lineal (O(n)) que permite encontrar todas las posiciones donde el patrón ocurre como prefijo del texto en posiciones desplazadas.
+
+El problema se encuentra publicado en la plataforma **Geeksforgeeks** en el siguiente enlace:  
+https://www.geeksforgeeks.org/problems/search-pattern-z-algorithm--141631/1
+
+A continuación, se muestra el código en C++:
+
+### Algoritmo-Z
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> search(string pat, string txt) {
+        string concat = pat + "$" + txt;
+        int n = concat.length();
+        vector<int> Z(n);
+
+        int L = 0, R = 0;
+        for (int i = 1; i < n; ++i) {
+            if (i > R) {
+                L = R = i;
+                while (R < n && concat[R - L] == concat[R])
+                    R++;
+                Z[i] = R - L;
+                R--;
+            }
+            else {
+                int k = i - L;
+                if (Z[k] < R - i + 1)
+                    Z[i] = Z[k];
+                else {
+                    L = i;
+                    while (R < n && concat[R - L] == concat[R])
+                        R++;
+                    Z[i] = R - L;
+                    R--;
+                }
+            }
+        }
+        vector<int> result;
+        int patLen = pat.length();
+        for (int i = 0; i < n; ++i) {
+            if (Z[i] == patLen) {
+                result.push_back(i - patLen - 1 + 1);  
+            }
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    string txt, pat;
+
+    cout << "Ingrese el texto (S): ";
+    getline(cin, txt);
+
+    cout << "Ingrese el patrón (pat): ";
+    getline(cin, pat);
+
+    Solution sol;
+    vector<int> result = sol.search(pat, txt);
+
+    if (result.empty()) {
+        cout << "-1\n";
+    }
+    else {
+        for (int index : result) {
+            cout << index << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+```
+
+### Resultados:
+
+![Result_ALGOZ1](Results/RESULT_ALGOZ1.png)
+
+### Ejercicio 15 (Algoritmo-Z 2)
+![AlgoZ_2](Exercises/ALGOZ_2.png)
+
+### Minimum Repeat to Make Substring
+
+El problema "Minimum Repeat to Make Substring" es un ejercicio de dificultad media que plantea determinar el número mínimo de repeticiones de una cadena s1 necesarias para que otra cadena s2 sea una subcadena de la repetición resultante.
+
+El objetivo es devolver ese número mínimo de repeticiones, o -1 si no existe tal número (es decir, si nunca se puede formar s2 como subcadena repitiendo s1).
+El problema se puede resolver eficientemente usando el algoritmo Z, que permite verificar en tiempo lineal si s2 aparece como subcadena dentro de un texto (en este caso, s1 repetido múltiples veces).
+
+El problema se encuentra publicado en la plataforma **Geeksforgeeks** en el siguiente enlace:  
+https://www.geeksforgeeks.org/problems/minimum-times-a-has-to-be-repeated-such-that-b-is-a-substring-of-it--170645/1?page=1&category=Pattern%20Searching&difficulty=Medium,Hard&sortBy=submissions
+
+A continuación, se muestra el código en C++:
+
+### Algoritmo-Z
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> computeZ(string str) {
+        int n = str.length();
+        vector<int> Z(n);
+        int L = 0, R = 0;
+
+        for (int i = 1; i < n; ++i) {
+            if (i > R) {
+                L = R = i;
+                while (R < n && str[R - L] == str[R]) R++;
+                Z[i] = R - L;
+                R--;
+            }
+            else {
+                int k = i - L;
+                if (Z[k] < R - i + 1)
+                    Z[i] = Z[k];
+                else {
+                    L = i;
+                    while (R < n && str[R - L] == str[R]) R++;
+                    Z[i] = R - L;
+                    R--;
+                }
+            }
+        }
+        return Z;
+    }
+
+    int minRepeats(string s1, string s2) {
+        string repeated = "";
+        int count = 0;
+
+        while (repeated.length() < s2.length()) {
+            repeated += s1;
+            count++;
+        }
+
+        repeated += s1;
+        count++;
+
+        string concat = s2 + "$" + repeated;
+        vector<int> Z = computeZ(concat);
+        int s2_len = s2.length();
+
+        for (int i = 0; i < Z.size(); ++i) {
+            if (Z[i] == s2_len) {
+                int match_index = i - s2_len - 1;
+                if (match_index + s2_len <= (count - 1) * s1.length()) {
+                    return count - 1;
+                }
+                else {
+                    return count;
+                }
+            }
+        }
+
+        return -1;
+    }
+};
+
+int main() {
+    string s1, s2;
+    cout << "Ingrese s1: ";
+    cin >> s1;
+    cout << "Ingrese s2: ";
+    cin >> s2;
+
+    Solution sol;
+    int result = sol.minRepeats(s1, s2);
+
+    cout << "Mínimas repeticiones necesarias: " << result << endl;
+
+    return 0;
+}
+```
+
+### Resultados:
+
+![Result_ALGOZ2](Results/RESULT_ALGOZ2.png)

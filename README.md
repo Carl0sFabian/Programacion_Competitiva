@@ -1161,3 +1161,90 @@ int main() {
 
 ![Grafico_TST](Results/Grafico_TST.png)
 
+### Ejercicio 12 (Map 1)
+![Map1](Exercises/MAP_1.png)
+
+###Phone Directory
+
+El problema "Phone directory" es un ejercicio de dificultad difícil que simula el comportamiento autocompletado de contactos en una agenda telefónica. A partir de una lista de contactos y una cadena de búsqueda, se requiere devolver todos los contactos que coincidan con cada prefijo creciente de la cadena ingresada por el usuario.
+
+Este problema puede resolverse de forma eficiente utilizando una estructura map<string>,Permite buscar, insertar y eliminar elementos de manera eficiente utilizando las claves como identificadores.
+
+El problema se encuentra publicado en la plataforma **Geeksforgeeks** en el siguiente enlace:  
+https://www.geeksforgeeks.org/problems/phone-directory4628/1?page=1&category=Map&difficulty=Hard&sortBy=submissions
+
+A continuación, se muestra el código en C++:
+
+### Map
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+#include <map>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<string>> displayContacts(int n, vector<string>& contact, string s) {
+        set<string> uniqueContacts(contact.begin(), contact.end());
+        map<string, set<string>> prefixMap;
+        for (const string& name : uniqueContacts) {
+            string prefix = "";
+            for (char ch : name) {
+                prefix += ch;
+                prefixMap[prefix].insert(name);
+            }
+        }
+        vector<vector<string>> result;
+        string searchPrefix = "";
+        for (char ch : s) {
+            searchPrefix += ch;
+            if (prefixMap.find(searchPrefix) != prefixMap.end()) {
+                vector<string> matches(prefixMap[searchPrefix].begin(), prefixMap[searchPrefix].end());
+                result.push_back(matches);
+            }
+            else {
+                result.push_back({ "0" });
+            }
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    int n;
+    cout << "ingrese el numero de contactos: ";
+    cin >> n;
+
+    vector<string> contact(n);
+    cout << "ingrese los contactos uno por uno:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> contact[i];
+    }
+
+    string s;
+    cout << "ingrese la cadena de busqueda: ";
+    cin >> s;
+
+    Solution obj;
+    vector<vector<string>> output = obj.displayContacts(n, contact, s);
+
+    cout << "\nResultados:\n";
+    for (const auto& matches : output) {
+        for (const string& name : matches) {
+            cout << name << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+```
+
+### Resultados:
+
+![Result_MAP1](Results/RESULT_MAP1.png)
+
